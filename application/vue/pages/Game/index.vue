@@ -74,8 +74,20 @@
     },
 
     created() {
+      // картинки
+      const allCards = [];
+      for (let x = 0; x <= 4; x++) {
+        for (let y = 0; y <= 4; y++) {
+          allCards.push(`x${x} y${y}`);
+        }
+      }
+      allCards.sort(() => {
+        return Math.random() - 0.5;
+      });
+
+
       // todo карточки
-      let cards = Array.from({length: this.size / 2}, (i, v) => v);
+      let cards = allCards.slice(0, ~~(this.size / 2));
 
       // todo generate object
       // карты х2
@@ -90,6 +102,7 @@
           value: val,
           isOpen: false,
           isDone: false,
+          level: this.level
         };
       });
 
@@ -150,7 +163,7 @@
       timeFinish() {
         let sec = ~~((Date.now() - this.startDate) / 1000);
         let min = ~~(sec / 60);
-        return `${min} мин ${sec - min * 60} сек`
+        return `${min} мин ${sec - min * 60} сек`;
       }
     }
   };

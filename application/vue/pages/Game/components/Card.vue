@@ -4,7 +4,11 @@
       :class="{'-flipped': isOpen || isDone, '-done': isDone}"
       class="card__body"
       @click="onClickCard">
-      <div class="card__item -front">{{ value }}</div>
+      <div class="card__item -front">
+        <div
+          :class="value"
+          class="card__image"></div>
+      </div>
       <div class="card__item -back"></div>
     </div>
   </div>
@@ -52,6 +56,39 @@
     }
     &.-back {
       background-position: -101px;
+    }
+
+    .card__image {
+      background: url("./smiles.png");
+      width: 79px;
+      height: 74px;
+      margin: 14px auto;
+
+      &.x1 {
+        background-position-x: -83px;
+      }
+      &.x2 {
+        background-position-x: -162px;
+      }
+      &.x3 {
+        background-position-x: -240px;
+      }
+      &.x4 {
+        background-position-x: -321px;
+      }
+
+      &.y1 {
+        background-position-y: -90px;
+      }
+      &.y2 {
+        background-position-y: -180px;
+      }
+      &.y3 {
+        background-position-y: -270px;
+      }
+      &.y4 {
+        background-position-y: -363px;
+      }
     }
   }
 </style>
