@@ -46,11 +46,11 @@
     width: 100%;
     height: 100%;
 
-    background: url("./card.png") no-repeat;
+    background: url("./card.png");
     background-size: cover;
     border-radius: 4px;
     backface-visibility: hidden;
-    box-shadow: 4px 4px 5px 0 #888;
+    box-shadow: 4px 4px 5px 0 #333;
 
     &.-front {
       transform: rotateY(180deg);

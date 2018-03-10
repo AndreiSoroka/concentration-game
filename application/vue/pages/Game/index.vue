@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="game">
     <div v-if="!isWin">
       <div>
         {{ countDone }}
@@ -26,6 +26,7 @@
 
 <style lang="scss">
   .game_place {
+    border-radius: 5px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -69,7 +70,7 @@
 
     computed: {
       isWin: function () {
-        return this.size === this.countDone;
+        return this.cards.length === this.countDone;
       },
     },
 
