@@ -4,12 +4,26 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 const IndexPage = () => import(/* webpackChunkName: "IndexPage" */ '../vue/pages/Index/index.vue');
+const Game = () => import(/* webpackChunkName: "NotFoundPage" */ '../vue/pages/Game/index.vue');
 const NotFoundPage = () => import(/* webpackChunkName: "NotFoundPage" */ '../vue/pages/NotFound/index.vue');
 
 
 const routes = [
-  {path: '/', component: IndexPage},
-  {path: '*', component: NotFoundPage}
+  {
+    path: '/',
+    name: 'index',
+    component: IndexPage
+  },
+  {
+    path: '/game/level/:level/size/:size',
+    name: 'game',
+    component: Game
+  },
+  {
+    path: '*',
+    name: 'nf',
+    component: NotFoundPage
+  }
 ];
 
 

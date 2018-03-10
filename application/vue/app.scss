@@ -16,7 +16,10 @@
 }
 
 // Styles
-@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/button-group";
+@import "~bootstrap/scss/jumbotron";
+
 
 body {
   font-family: 'Ubuntu', sans-serif;
@@ -30,7 +33,6 @@ body {
   margin-right: auto;
   width: 800px;
   padding: 0 50px;
-  font-size: 14px;
 }
 
 @media (max-width: 850px) {
