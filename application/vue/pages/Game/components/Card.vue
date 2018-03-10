@@ -120,6 +120,16 @@
         default: 0,
       },
     },
+    data: function () {
+      return {
+        isRotateY: false
+      };
+    },
+
+    created: function () {
+      this.isRotateY = this._randomInteger(0, 1);
+    },
+
     methods: {
       onClickCard() {
         this.$emit('clickCard', this.id);
@@ -130,7 +140,7 @@
         if (this.level > 1) {
           styles.transform = `rotate(${this._randomInteger(-50, 50)}deg)`;
         }
-        if (this.level > 2 && this._randomInteger(0, 1)) {
+        if (this.level > 2 && this.isRotateY) {
           styles.transform += ` rotateY(180deg)`;
         }
 
