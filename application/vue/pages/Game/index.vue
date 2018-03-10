@@ -1,10 +1,14 @@
 <template>
   <div class="game_place">
     <card
-      v-for="n in size"
-      :key="n"
-      class="game_place__card"></card>
-
+      v-for="({id, value, isOpen, isDone}, index) in cards"
+      :key="index"
+      :id="id"
+      :value="value"
+      :is-open="isOpen"
+      :is-done="isDone"
+      class="game_place__card"
+      @clickCard="onClickCard"></card>
   </div>
 </template>
 
@@ -33,7 +37,81 @@
         images: [],
         level: +this.$route.params.level,
         size: +this.$route.params.size,
+        /*
+        [
+          {
+            id: index,
+            value: val,
+            isOpen: false,
+            isDone: false,
+          }
+        ]
+        */
+        cards: [],
+        openCards: [],
       };
+    },
+
+    created() {
+      // todo карточки
+      let cards = Array.from({length: this.size / 2}, (i, v) => v);
+
+      // todo generate object
+      // карты х2
+      cards = cards.concat(cards);
+      // объект карточек
+      cards.forEach((val, index) => {
+        this.cards[index] = {
+          id: index,
+          value: val,
+          isOpen: false,
+          isDone: false,
+        };
+      });
+
+    },
+
+    methods: {
+      onClickCard(id) {
+        if (this.openCards.length === 2) {
+          return;
+        }
+
+        this.__updateCardData(id, 'isOpen', true);
+        this.openCards.push(id);
+
+        if (this.openCards.length === 2) {
+          setTimeout(this.closeOpenCards, 1000);
+        }
+
+      },
+
+      closeOpenCards() {
+        // карты совпали
+        if (this.cards[this.openCards[0]].value === this.cards[this.openCards[1]].value) {
+          this.__updateCardData(this.openCards[0], 'isDone', true);
+          this.__updateCardData(this.openCards[1], 'isDone', true);
+        }
+        // разные карты
+        else {
+          this.openCards.forEach(id => {
+            this.__updateCardData(id, 'isOpen', false);
+          });
+        }
+        this.openCards = [];
+      },
+
+      /**
+       *
+       * @param id
+       * @param param
+       * @param value
+       * @private
+       */
+      __updateCardData(id, param, value) {
+        let _cardData = {...this.cards[id], [param]: value};
+        this.$set(this.cards, id, _cardData);
+      }
     }
   };
 </script>

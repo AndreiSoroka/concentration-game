@@ -1,11 +1,11 @@
 <template>
   <div class="card">
     <div
-      :class="{'-flipped': isOpen}"
+      :class="{'-flipped': isOpen || isDone, '-done': isDone}"
       class="card__body"
       @click="onClickCard">
-      <div class="card__item -front">1</div>
-      <div class="card__item -back">2</div>
+      <div class="card__item -front">{{ value }}</div>
+      <div class="card__item -back"></div>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@
     position: relative;
     width: 100px;
     height: 134px;
-
+    perspective: 800px;
   }
 
   .card__body {
@@ -28,12 +28,18 @@
     &.-flipped {
       transform: rotateY(180deg);
     }
+    &.-done {
+      .-front {
+        opacity: 0.3;
+      }
+    }
   }
 
   .card__item {
     position: absolute;
     width: 100%;
     height: 100%;
+
     background: url("./card.png") no-repeat;
     background-size: cover;
     border-radius: 4px;
@@ -51,15 +57,27 @@
 
 <script>
   export default {
-    data: function () {
-      return {
-        isOpen: false
-      };
+    props: {
+      id: {
+        type: Number,
+        default: null,
+      },
+      value: {
+        type: Number,
+        default: null,
+      },
+      isOpen: {
+        type: Boolean,
+        default: false,
+      },
+      isDone: {
+        type: Boolean,
+        default: false,
+      },
     },
     methods: {
       onClickCard() {
-        this.isOpen = true;
-
+        this.$emit('clickCard', this.id);
       }
     }
   };
