@@ -1,12 +1,9 @@
 <template>
   <div class="game_place">
     <card
-      v-for="({id, value, isOpen, isDone}, index) in cards"
+      v-for="(card, index) in cards"
       :key="index"
-      :id="id"
-      :value="value"
-      :is-open="isOpen"
-      :is-done="isDone"
+      v-bind="card"
       class="game_place__card"
       @clickCard="onClickCard"></card>
   </div>
