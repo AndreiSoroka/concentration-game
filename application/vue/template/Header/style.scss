@@ -1,0 +1,11 @@
+.my-header {
+  margin: 10px 0;
+}
+.my-header__logo {
+  background: url("./logo.png")  center center no-repeat;
+  width: 140px;
+  background-size: 100%;
+  height: 100px;
+  display: inline-block;
+  margin: 0 auto;
+}
