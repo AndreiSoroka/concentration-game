@@ -1,11 +1,26 @@
 <template>
-  <div class="game_place">
-    <card
-      v-for="(card, index) in cards"
-      :key="index"
-      v-bind="card"
-      class="game_place__card"
-      @clickCard="onClickCard"></card>
+  <div>
+    <div v-if="!isWin">
+      <div>
+        {{ countDone }}
+      </div>
+      <div class="game_place">
+        <card
+          v-for="(card, index) in cards"
+          :key="index"
+          v-bind="card"
+          class="game_place__card"
+          @clickCard="onClickCard"></card>
+      </div>
+    </div>
+    <div v-else>
+      <h3>Поздравляем!</h3>
+      <ul>
+        <li>Всего карт: {{ size }}</li>
+        <li>Карт перевернуто: {{ countActions }}</li>
+        <li>Времени: {{ timeFinish() }}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -45,8 +60,17 @@
         ]
         */
         cards: [],
-        openCards: [],
+        nowOpenCards: [],
+        countDone: 0,
+        countActions: 0,
+        startDate: Date.now()
       };
+    },
+
+    computed: {
+      isWin: function () {
+        return this.size === this.countDone;
+      },
     },
 
     created() {
@@ -73,17 +97,23 @@
 
     methods: {
       onClickCard(id) {
-        if (this.openCards.length === 2) {
+        // уже выбрано 2 карты
+        if (this.nowOpenCards.length === 2) {
           return;
         }
-        if (~this.openCards.indexOf(id)) {
+        // карта среди выбранных
+        if (~this.nowOpenCards.indexOf(id)) {
           return;
         }
 
+        this.countActions += 1;
+
+        // открыть карту
         this.__updateCardData(id, 'isOpen', true);
-        this.openCards.push(id);
+        this.nowOpenCards.push(id);
 
-        if (this.openCards.length === 2) {
+        // закрыть карты через время
+        if (this.nowOpenCards.length === 2) {
           setTimeout(this.closeOpenCards, 1000);
         }
 
@@ -91,17 +121,18 @@
 
       closeOpenCards() {
         // карты совпали
-        if (this.cards[this.openCards[0]].value === this.cards[this.openCards[1]].value) {
-          this.__updateCardData(this.openCards[0], 'isDone', true);
-          this.__updateCardData(this.openCards[1], 'isDone', true);
+        if (this.cards[this.nowOpenCards[0]].value === this.cards[this.nowOpenCards[1]].value) {
+          this.__updateCardData(this.nowOpenCards[0], 'isDone', true);
+          this.__updateCardData(this.nowOpenCards[1], 'isDone', true);
+          this.countDone += 2;
         }
         // разные карты
         else {
-          this.openCards.forEach(id => {
+          this.nowOpenCards.forEach(id => {
             this.__updateCardData(id, 'isOpen', false);
           });
         }
-        this.openCards = [];
+        this.nowOpenCards = [];
       },
 
       /**
@@ -114,6 +145,12 @@
       __updateCardData(id, param, value) {
         let _cardData = {...this.cards[id], [param]: value};
         this.$set(this.cards, id, _cardData);
+      },
+
+      timeFinish() {
+        let sec = ~~((Date.now() - this.startDate) / 1000);
+        let min = ~~(sec / 60);
+        return `${min} мин ${sec - min * 60} сек`
       }
     }
   };
