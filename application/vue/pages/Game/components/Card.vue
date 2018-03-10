@@ -24,6 +24,7 @@
     height: 100%;
     transform-style: preserve-3d;
     transition: transform 0.3s;
+    cursor: pointer;
 
     &.-flipped {
       transform: rotateY(180deg);

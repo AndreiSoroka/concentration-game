@@ -56,6 +56,9 @@
       // todo generate object
       // карты х2
       cards = cards.concat(cards);
+      cards.sort(() => {
+        return Math.random() - 0.5;
+      });
       // объект карточек
       cards.forEach((val, index) => {
         this.cards[index] = {
@@ -71,6 +74,9 @@
     methods: {
       onClickCard(id) {
         if (this.openCards.length === 2) {
+          return;
+        }
+        if (~this.openCards.indexOf(id)) {
           return;
         }
 
