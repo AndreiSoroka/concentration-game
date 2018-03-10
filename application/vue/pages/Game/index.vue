@@ -1,17 +1,14 @@
 <template>
   <div class="game">
-    <div v-if="!isWin">
-      <div>
-        {{ countDone }}
-      </div>
-      <div class="game_place">
-        <card
-          v-for="(card, index) in cards"
-          :key="index"
-          v-bind="card"
-          class="game_place__card"
-          @clickCard="onClickCard"></card>
-      </div>
+    <div
+      v-if="!isWin"
+      class="game_place">
+      <card
+        v-for="(card, index) in cards"
+        :key="index"
+        v-bind="card"
+        class="game_place__card"
+        @clickCard="onClickCard"></card>
     </div>
     <div v-else>
       <h3>Поздравляем!</h3>
@@ -40,12 +37,17 @@
 <script>
   import Card from './components/Card.vue';
 
+  // картинки для карт (генерация классов css)
+  const allCards = Array.from({length: 25}, (value, index) => `x${Math.floor(index / 5)} y${index % 5}`);
+
+  const DELAY_OPEN_CARD = 1000;
+
   export default {
     components: {
       Card
     },
 
-    data: function () {
+    data() {
       return {
         images: [],
         level: +this.$route.params.level,
@@ -69,44 +71,31 @@
     },
 
     computed: {
-      isWin: function () {
+      isWin() {
         return this.cards.length === this.countDone;
       },
     },
 
     created() {
-      // картинки
-      const allCards = [];
-      for (let x = 0; x <= 4; x++) {
-        for (let y = 0; y <= 4; y++) {
-          allCards.push(`x${x} y${y}`);
-        }
-      }
-      allCards.sort(() => {
-        return Math.random() - 0.5;
-      });
+      // случайные картинки на картах
+      allCards.sort(() => Math.random() - 0.5);
 
-
-      // todo карточки
-      let cards = allCards.slice(0, ~~(this.size / 2));
-
-      // todo generate object
-      // карты х2
+      // создаем карты для игры, и пары для них
+      let cards = allCards.slice(0, Math.floor(this.size / 2));
       cards = cards.concat(cards);
-      cards.sort(() => {
-        return Math.random() - 0.5;
-      });
-      // объект карточек
-      cards.forEach((val, index) => {
-        this.cards[index] = {
-          id: index,
-          value: val,
-          isOpen: false,
-          isDone: false,
-          level: this.level
-        };
-      });
 
+      // перетасовка карт
+      cards.sort(() => Math.random() - 0.5);
+      cards.sort(() => Math.random() - 0.5);
+      cards.sort(() => Math.random() - 0.5);
+
+      this.cards = cards.map((value, id) => ({
+        id,
+        value,
+        isOpen: false,
+        isDone: false,
+        level: this.level
+      }));
     },
 
     methods: {
@@ -116,7 +105,7 @@
           return;
         }
         // карта среди выбранных
-        if (~this.nowOpenCards.indexOf(id)) {
+        if (this.nowOpenCards.includes(id)) {
           return;
         }
 
@@ -128,24 +117,24 @@
 
         // закрыть карты через время
         if (this.nowOpenCards.length === 2) {
-          setTimeout(this.closeOpenCards, 1000);
+          setTimeout(() => {
+            this.checkCards();
+            this.closeOpenCards();
+          }, DELAY_OPEN_CARD);
         }
 
       },
 
-      closeOpenCards() {
+      checkCards() {
         // карты совпали
         if (this.cards[this.nowOpenCards[0]].value === this.cards[this.nowOpenCards[1]].value) {
-          this.__updateCardData(this.nowOpenCards[0], 'isDone', true);
-          this.__updateCardData(this.nowOpenCards[1], 'isDone', true);
-          this.countDone += 2;
+          this.nowOpenCards.forEach(id => this.__updateCardData(id, 'isDone', true));
+          this.countDone += this.nowOpenCards.length;
         }
-        // разные карты
-        else {
-          this.nowOpenCards.forEach(id => {
-            this.__updateCardData(id, 'isOpen', false);
-          });
-        }
+      },
+
+      closeOpenCards() {
+        this.nowOpenCards.forEach(id => this.__updateCardData(id, 'isOpen', false));
         this.nowOpenCards = [];
       },
 
@@ -162,9 +151,8 @@
       },
 
       timeFinish() {
-        let sec = ~~((Date.now() - this.startDate) / 1000);
-        let min = ~~(sec / 60);
-        return `${min} мин ${sec - min * 60} сек`;
+        let sec = Math.floor((Date.now() - this.startDate) / 1000);
+        return `${Math.floor(sec / 60)} мин ${sec % 60} сек`;
       }
     }
   };
