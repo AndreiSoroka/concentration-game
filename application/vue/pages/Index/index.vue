@@ -96,7 +96,7 @@
   export default {
     data: () => ({
       levels: [1, 2, 3],
-      sizes: [8, 12, 16, 24, 28, 32, 40, 48],
+      sizes: [6, 12, 18, 24, 30, 36, 42, 48],
       selectLevel: 2,
       selectSize: 24
     }),
