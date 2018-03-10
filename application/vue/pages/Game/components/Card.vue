@@ -7,6 +7,7 @@
       <div class="card__item -front">
         <div
           :class="value"
+          :style="styleObj()"
           class="card__image"></div>
       </div>
       <div class="card__item -back"></div>
@@ -63,6 +64,8 @@
       width: 79px;
       height: 74px;
       margin: 14px auto;
+      transform-style: preserve-3d;
+      transition: transform 0.3s;
 
       &.x1 {
         background-position-x: -83px;
@@ -101,7 +104,7 @@
         default: null,
       },
       value: {
-        type: Number,
+        type: String,
         default: null,
       },
       isOpen: {
@@ -112,10 +115,27 @@
         type: Boolean,
         default: false,
       },
+      level: {
+        type: Number,
+        default: 0,
+      },
     },
     methods: {
       onClickCard() {
         this.$emit('clickCard', this.id);
+      },
+
+      styleObj() {
+        let styles = {};
+        if (this.level > 1) {
+          styles.transform = `rotate(${this._randomInteger(-50, 50)}deg)`;
+        }
+
+        return styles;
+      },
+
+      _randomInteger(min, max) {
+        return ~~(min + Math.random() * (max + 1 - min));
       }
     }
   };
