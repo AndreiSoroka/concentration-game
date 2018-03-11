@@ -25,7 +25,7 @@ let configWebpack = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'HRbb',
+      title: 'Concentration game',
       hash: NODE_ENV === 'production',
       cache: false,
       template: 'index.ejs',
