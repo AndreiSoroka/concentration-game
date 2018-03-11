@@ -37,6 +37,7 @@
 <script>
   import Card from './components/Card.vue';
   import shuffle from 'lodash/shuffle';
+  import flatten from 'lodash/flatten';
 
   // картинки для карт (генерация классов css)
   const allCards = Array.from({length: 25}, (value, index) => `x${Math.floor(index / 5)} y${index % 5}`);
@@ -84,17 +85,11 @@
       // случайные картинки на картах
       let _allCards = shuffle(allCards);
 
-      // создаем карты для игры, и пары для них
+      // создаем карты для игры
       let cards = _allCards.slice(0, Math.floor(this.size / this.needOpenCard));
 
-      cards = [].concat.apply([], (function addArray(i = 1, arr = [], needOpenCard = this.needOpenCard) {
-        if (i <= needOpenCard) {
-          i++;
-          arr.push(cards);
-          return addArray(i, arr);
-        }
-        return arr;
-      }.bind(this))());
+      // создаем пары для карт
+      cards = flatten(Array(this.needOpenCard).fill(cards));
 
       // перемешиваем карты
       cards = shuffle(cards);
