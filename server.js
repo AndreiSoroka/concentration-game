@@ -30,7 +30,8 @@ if (NODE_ENV==='development') {
 new webpackDevServer(webpack(webpackConfig), {
   publicPath: webpackConfig.output.publicPath,
   hot: true,
-  historyApiFallback: true
+  historyApiFallback: true,
+  disableHostCheck: true
 }).listen(PORT, configServer.host, (err, res) => {
   if (err) {
     return console.log(err);
