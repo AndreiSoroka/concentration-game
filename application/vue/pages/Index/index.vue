@@ -1,5 +1,13 @@
 <template>
   <div class="page_in">
+
+    <link
+      :href="preload.cardImage"
+      rel="prefetch prerender"/>
+    <link
+      :href="preload.smilesImage"
+      rel="prefetch prerender"/>
+
     <div class="page_in__block">
       <b>Концентрация (Concentration)</b>, также известная как Match Match, Match Up, Memory, Pelmanism,
       Shinkei-suijaku,
@@ -94,12 +102,16 @@
 </style>
 
 <script>
+  import cardImage from '../Game/components/card.png';
+  import smilesImage from '../Game/components/smiles.png';
+
   export default {
     data: () => ({
       levels: [1, 2, 3],
       sizes: [6, 12, 18, 24, 30, 36, 42, 48],
       selectLevel: 2,
-      selectSize: 24
+      selectSize: 24,
+      preload: {cardImage, smilesImage}
     }),
     methods: {
       onClickStart() {
