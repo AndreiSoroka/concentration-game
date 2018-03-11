@@ -74,6 +74,7 @@
 
   .start_game {
     margin: 25px 0;
+    background: rgba(255, 255, 255, 0.68);
   }
 
   .start_game__item {
