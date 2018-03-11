@@ -3,5 +3,11 @@
     "process.env": {
       "NODE_ENV": "\"production\""
     }
+  },
+  "_onlyDevelopment": {
+    "devServer": {
+      "host": "concentration-game-vue.herokuapp.com",
+      "port": 3000
+    }
   }
 }

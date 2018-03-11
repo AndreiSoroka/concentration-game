@@ -4,9 +4,9 @@ const webpackConfig = require('./webpack.config');
 const open = require("open");
 const configApp = require('./config');
 
-let configServer = configApp('development')['_onlyDevelopment']['devServer'];
-
 const NODE_ENV = process.env.NODE_ENV || 'development';
+
+let configServer = configApp(NODE_ENV)['_onlyDevelopment']['devServer'];
 
 let PORT = process.env.PORT || configServer.port;
 
