@@ -71,7 +71,8 @@
         nowOpenIdCards: [],
         countDone: 0,
         countActions: 0,
-        startDate: Date.now()
+        startDate: Date.now(),
+        idInterval: null
       };
     },
 
@@ -107,10 +108,13 @@
       onClickCard(id) {
         // уже выбрано нуженое кол-во карт
         if (this.nowOpenIdCards.length === this.needOpenCard) {
-          return;
+          clearTimeout(this.idInterval);
+          this.checkCards();
+          this.closeOpenCards();
         }
-        // карта среди выбранных
-        if (this.nowOpenIdCards.includes(id)) {
+
+        // карта isOpen или isDone
+        if (this.cards[id].isOpen || this.cards[id].isDone) {
           return;
         }
 
@@ -122,7 +126,7 @@
 
         // закрыть карты через время
         if (this.nowOpenIdCards.length === this.needOpenCard) {
-          setTimeout(() => {
+          this.idInterval = setTimeout(() => {
             this.checkCards();
             this.closeOpenCards();
           }, DELAY_OPEN_CARD);
