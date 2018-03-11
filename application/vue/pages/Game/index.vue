@@ -36,6 +36,7 @@
 
 <script>
   import Card from './components/Card.vue';
+  import shuffle from 'lodash/shuffle';
 
   // картинки для карт (генерация классов css)
   const allCards = Array.from({length: 25}, (value, index) => `x${Math.floor(index / 5)} y${index % 5}`);
@@ -48,10 +49,13 @@
     },
 
     data() {
+      let level = +this.$route.params.level;
+      let size = +this.$route.params.size;
       return {
         images: [],
-        level: +this.$route.params.level,
-        size: +this.$route.params.size,
+        level,
+        size,
+        needOpenCard: (level <= 2) ? 2 : 3,
         /*
         [
           {
@@ -63,7 +67,7 @@
         ]
         */
         cards: [],
-        nowOpenCards: [],
+        nowOpenIdCards: [],
         countDone: 0,
         countActions: 0,
         startDate: Date.now()
@@ -78,16 +82,22 @@
 
     created() {
       // случайные картинки на картах
-      allCards.sort(() => Math.random() - 0.5);
+      let _allCards = shuffle(allCards);
 
       // создаем карты для игры, и пары для них
-      let cards = allCards.slice(0, Math.floor(this.size / 2));
-      cards = cards.concat(cards);
+      let cards = _allCards.slice(0, Math.floor(this.size / this.needOpenCard));
 
-      // перетасовка карт
-      cards.sort(() => Math.random() - 0.5);
-      cards.sort(() => Math.random() - 0.5);
-      cards.sort(() => Math.random() - 0.5);
+      cards = [].concat.apply([], (function addArray(i = 1, arr = [], needOpenCard = this.needOpenCard) {
+        if (i <= needOpenCard) {
+          i++;
+          arr.push(cards);
+          return addArray(i, arr);
+        }
+        return arr;
+      }.bind(this))());
+
+      // перемешиваем карты
+      cards = shuffle(cards);
 
       this.cards = cards.map((value, id) => ({
         id,
@@ -100,12 +110,12 @@
 
     methods: {
       onClickCard(id) {
-        // уже выбрано 2 карты
-        if (this.nowOpenCards.length === 2) {
+        // уже выбрано нуженое кол-во карт
+        if (this.nowOpenIdCards.length === this.needOpenCard) {
           return;
         }
         // карта среди выбранных
-        if (this.nowOpenCards.includes(id)) {
+        if (this.nowOpenIdCards.includes(id)) {
           return;
         }
 
@@ -113,10 +123,10 @@
 
         // открыть карту
         this.__updateCardData(id, 'isOpen', true);
-        this.nowOpenCards.push(id);
+        this.nowOpenIdCards.push(id);
 
         // закрыть карты через время
-        if (this.nowOpenCards.length === 2) {
+        if (this.nowOpenIdCards.length === this.needOpenCard) {
           setTimeout(() => {
             this.checkCards();
             this.closeOpenCards();
@@ -126,20 +136,31 @@
       },
 
       checkCards() {
-        // карты совпали
-        if (this.cards[this.nowOpenCards[0]].value === this.cards[this.nowOpenCards[1]].value) {
-          this.nowOpenCards.forEach(id => this.__updateCardData(id, 'isDone', true));
-          this.countDone += this.nowOpenCards.length;
+        // проверка совпадения карт
+        let isValueEq = true;
+
+        for (let i = 1; i < this.nowOpenIdCards.length; i++) {
+          if (this.cards[this.nowOpenIdCards[i]].value === this.cards[this.nowOpenIdCards[i - 1]].value) {
+            continue;
+          }
+          isValueEq = false;
+          break;
+        }
+
+        // если карты совпали, проставляем им isDone
+        if (isValueEq) {
+          this.nowOpenIdCards.forEach(id => this.__updateCardData(id, 'isDone', true));
+          this.countDone += this.nowOpenIdCards.length;
         }
       },
 
       closeOpenCards() {
-        this.nowOpenCards.forEach(id => this.__updateCardData(id, 'isOpen', false));
-        this.nowOpenCards = [];
+        this.nowOpenIdCards.forEach(id => this.__updateCardData(id, 'isOpen', false));
+        this.nowOpenIdCards = [];
       },
 
       /**
-       *
+       * Обновление вложнных объектов в @see {@link data.cards}
        * @param id
        * @param param
        * @param value
