@@ -29,9 +29,9 @@
           </div>
         </div>
         <div class="start_game__description">
-          <div v-show="selectLevel===1">На столе простые карточки</div>
-          <div v-show="selectLevel===2">На столе фон карточек отличается</div>
-          <div v-show="selectLevel===3">На столе фон карточек отличается и картинки могут быть отражены</div>
+          <div v-show="selectLevel===1">На столе простые карточки, нужно найти пару</div>
+          <div v-show="selectLevel===2">На столе карты могут быть отражены и повернуты, нужно найти пару</div>
+          <div v-show="selectLevel===3">На столе карты могут быть отражены и повернуты, нужно найти три карты</div>
         </div>
       </div>
 

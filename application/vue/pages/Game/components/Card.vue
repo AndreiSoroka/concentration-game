@@ -151,9 +151,9 @@
         let styles = {};
         if (this.level > 1) {
           styles.transform = `rotate(${this._randomInteger(-50, 50)}deg)`;
-        }
-        if (this.level > 2 && this.isRotateY) {
-          styles.transform += ` rotateY(180deg)`;
+          if (this.isRotateY) {
+            styles.transform += ` rotateY(180deg)`;
+          }
         }
 
         return styles;
