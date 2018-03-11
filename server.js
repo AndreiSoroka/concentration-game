@@ -6,14 +6,26 @@ const configApp = require('./config');
 
 let configServer = configApp('development')['_onlyDevelopment']['devServer'];
 
-let url = `http://${configServer.host}:${configServer.port}`;
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+let PORT = process.env.PORT || configServer.port;
+
+let url = `http://${configServer.host}:${PORT}`;
 
 webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-webpackConfig.entry = [
-  `webpack-dev-server/client?${url}`,
-  'webpack/hot/only-dev-server',
-  './app.js'
-];
+
+if (NODE_ENV==='development') {
+  webpackConfig.entry = [
+    `webpack-dev-server/client?${url}`,
+    'webpack/hot/only-dev-server',
+    './app.js'
+  ];
+} else {
+  webpackConfig.entry = [
+    `webpack-dev-server/client?${url}`,
+    './app.js'
+  ];
+}
 
 new webpackDevServer(webpack(webpackConfig), {
   publicPath: webpackConfig.output.publicPath,
