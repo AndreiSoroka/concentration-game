@@ -121,9 +121,10 @@
           value,
           isOpen: false,
           isDone: false,
-          level: this.level,
-          startDate: Date.now(),
+          level: this.level
         }));
+
+        this.startDate = Date.now();
       },
 
       onClickCard(id) {
