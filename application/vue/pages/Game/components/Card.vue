@@ -31,13 +31,14 @@
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transition: transform 0.4s;
+    transition: transform 0.3s;
     cursor: pointer;
 
     &.-flipped {
-      transform: rotateY(180deg);
+      transform: rotateY(180deg) translateZ(0);
     }
     &.-done {
+      transform: rotateY(180deg) translateZ(15px);
       .-front {
         opacity: 0.3;
       }
@@ -52,8 +53,9 @@
     background: url("./card.png");
     background-size: cover;
     border-radius: 4px;
-    backface-visibility: hidden;
     box-shadow: 4px 4px 5px 0 #333;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 
     &.-front {
       background-size: auto;
