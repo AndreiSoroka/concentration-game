@@ -1,3 +1,9 @@
+### Demo
+You can see demo: [https://concentration-game-vue.herokuapp.com](https://concentration-game-vue.herokuapp.com/)
+
+#### Repository: get start new project
+https://github.com/AndreiSoroka/get-start-template-vue/
+
 ### Build production
 
 ``` bash
