@@ -55,6 +55,7 @@
     &.-front {
       background-size: auto;
       transform: rotateY(180deg);
+      transition: opacity .2s;
     }
     &.-back {
       background-position: -101px;

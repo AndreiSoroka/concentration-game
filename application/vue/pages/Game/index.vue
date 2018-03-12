@@ -1,5 +1,15 @@
 <template>
   <div class="game">
+    <div class="game__menu">
+      <router-link
+        to="/"
+        class="btn btn-link">Новая игра
+      </router-link>
+      <button
+        class="btn btn-link"
+        @click="reloadThisLevel">Повторить уровень
+      </button>
+    </div>
     <div
       v-if="!isWin"
       class="game_place">
@@ -32,6 +42,10 @@
   .game_place__card {
     margin: 8px;
   }
+
+  .game__menu {
+    margin-bottom: 1rem;
+  }
 </style>
 
 <script>
@@ -41,8 +55,8 @@
 
   // картинки для карт (генерация классов css)
   const allCards = Array.from({length: 25}, (value, index) => `x${Math.floor(index / 5)} y${index % 5}`);
-
   const DELAY_OPEN_CARD = 1000;
+  const DELAY_CLOSE_CARD = 300;
 
   export default {
     components: {
@@ -53,7 +67,7 @@
       let level = +this.$route.params.level;
       let size = +this.$route.params.size;
       return {
-        images: [],
+        blockGame: false,
         level,
         size,
         needOpenCard: (level <= 2) ? 2 : 3,
@@ -71,8 +85,8 @@
         nowOpenIdCards: [],
         countDone: 0,
         countActions: 0,
-        startDate: Date.now(),
-        idInterval: null
+        startDate: null,
+        idInterval: null,
       };
     },
 
@@ -83,29 +97,39 @@
     },
 
     created() {
-      // случайные картинки на картах
-      let _allCards = shuffle(allCards);
-
-      // создаем карты для игры
-      let cards = _allCards.slice(0, Math.floor(this.size / this.needOpenCard));
-
-      // создаем пары для карт
-      cards = flatten(Array(this.needOpenCard).fill(cards));
-
-      // перемешиваем карты
-      cards = shuffle(cards);
-
-      this.cards = cards.map((value, id) => ({
-        id,
-        value,
-        isOpen: false,
-        isDone: false,
-        level: this.level
-      }));
+      this.generationNewGame();
     },
 
     methods: {
+      generationNewGame() {
+
+        // случайные картинки на картах
+        let _allCards = shuffle(allCards);
+
+        // создаем карты для игры
+        let cards = _allCards.slice(0, Math.floor(this.size / this.needOpenCard));
+
+        // создаем пары для карт
+        cards = flatten(Array(this.needOpenCard).fill(cards));
+
+        // перемешиваем карты
+        cards = shuffle(cards);
+
+        this.cards = cards.map((value, id) => ({
+          id,
+          value,
+          isOpen: false,
+          isDone: false,
+          level: this.level,
+          startDate: Date.now(),
+        }));
+      },
+
       onClickCard(id) {
+        if (this.blockGame) {
+          return;
+        }
+
         // уже выбрано нуженое кол-во карт
         if (this.nowOpenIdCards.length === this.needOpenCard) {
           clearTimeout(this.idInterval);
@@ -173,6 +197,19 @@
       timeFinish() {
         let sec = Math.floor((Date.now() - this.startDate) / 1000);
         return `${Math.floor(sec / 60)} мин ${sec % 60} сек`;
+      },
+
+      reloadThisLevel() {
+        clearInterval(this.idInterval);
+        this.blockGame = true;
+        this.cards = this.cards.map(val => ({...val, isDone: false, isOpen: false}));
+        setTimeout(() => {
+          this.nowOpenIdCards = [];
+          this.countDone = 0;
+          this.countActions = 0;
+          this.generationNewGame();
+          this.blockGame = false;
+        }, this.isWin ? 0 : DELAY_CLOSE_CARD);
       }
     }
   };
