@@ -14,28 +14,35 @@ let url = `http://${configServer.host}:${PORT}`;
 
 webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 
-if (NODE_ENV==='development') {
+
+let configDevServer = {
+  publicPath: webpackConfig.output.publicPath,
+  historyApiFallback: true,
+  disableHostCheck: true,
+  hot: false,
+  compress: true,
+  inline: false,
+};
+
+if (NODE_ENV === 'development') {
   webpackConfig.entry = [
     `webpack-dev-server/client?${url}`,
     'webpack/hot/only-dev-server',
     './app.js'
   ];
-} else {
-  webpackConfig.entry = [
-    `webpack-dev-server/client?${url}`,
-    './app.js'
-  ];
+
+  configDevServer = Object.assign(configDevServer, {
+    disableHostCheck: false,
+    hot: true,
+    compress: false
+  });
 }
 
-new webpackDevServer(webpack(webpackConfig), {
-  publicPath: webpackConfig.output.publicPath,
-  hot: true,
-  historyApiFallback: true,
-  disableHostCheck: true
-}).listen(PORT, configServer.host, (err, res) => {
-  if (err) {
-    return console.log(err);
-  }
-  console.log(`Server listening on: ${url}`);
-  open(url);
-});
+new webpackDevServer(webpack(webpackConfig), configDevServer)
+  .listen(PORT, configServer.host, (err, res) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(`Server listening on: ${url}`);
+    open(url);
+  });
