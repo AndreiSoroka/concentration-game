@@ -3,8 +3,11 @@
     <div
       :class="classCardBody"
       class="card__body"
-      @click="onClickCard">
-      <div class="card__item -front">
+      @click="onClickCard"
+      @mouseover="preload=false">
+      <div
+        :class="{'-preload': preload}"
+        class="card__item -front">
         <div
           :class="value"
           :style="styleObjImage()"
@@ -28,7 +31,7 @@
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transition: transform 0.3s;
+    transition: transform 0.4s;
     cursor: pointer;
 
     &.-flipped {
@@ -56,6 +59,12 @@
       background-size: auto;
       transform: rotateY(180deg);
       transition: opacity .2s;
+
+      &.-preload {
+        box-shadow: none;
+        transform: none;
+        opacity: 0.1;
+      }
     }
     &.-back {
       background-position: -101px;
@@ -68,7 +77,7 @@
     height: 74px;
     margin: 14px auto;
     transform-style: preserve-3d;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
 
     &.x1 {
       background-position-x: -83px;
@@ -126,7 +135,8 @@
 
     data() {
       return {
-        isRotateY: false
+        isRotateY: false,
+        preload: true // bug chrome, need preload images
       };
     },
 
@@ -145,6 +155,7 @@
 
     methods: {
       onClickCard() {
+        this.preload = false;
         this.$emit('clickCard', this.id);
       },
 

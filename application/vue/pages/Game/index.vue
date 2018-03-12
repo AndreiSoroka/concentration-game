@@ -15,7 +15,7 @@
       class="game_place">
       <card
         v-for="(card, index) in cards"
-        :key="index"
+        :key="`${countGame}-${index}`"
         v-bind="card"
         class="game_place__card"
         @clickCard="onClickCard"></card>
@@ -67,6 +67,7 @@
       let level = +this.$route.params.level;
       let size = +this.$route.params.size;
       return {
+        countGame: 0,
         blockGame: false,
         level,
         size,
@@ -204,6 +205,7 @@
         this.blockGame = true;
         this.cards = this.cards.map(val => ({...val, isDone: false, isOpen: false}));
         setTimeout(() => {
+          this.countGame += 1;
           this.nowOpenIdCards = [];
           this.countDone = 0;
           this.countActions = 0;
