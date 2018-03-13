@@ -192,8 +192,7 @@
        * @private
        */
       __updateCardData(id, param, value) {
-        let _cardData = {...this.cards[id], [param]: value};
-        this.$set(this.cards, id, _cardData);
+        this.cards[id][param] = value;
       },
 
       timeFinish() {

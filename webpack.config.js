@@ -13,7 +13,7 @@ let configWebpack = {
   context: path.join(__dirname, './application/'),
 
   entry: {
-    app: "./app.js",
+    app: "./App.js",
   },
 
   output: {

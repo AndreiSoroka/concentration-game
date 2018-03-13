@@ -3,9 +3,9 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-const IndexPage = () => import(/* webpackChunkName: "IndexPage" */ '../vue/pages/Index/index.vue');
-const Game = () => import(/* webpackChunkName: "NotFoundPage" */ '../vue/pages/Game/index.vue');
-const NotFoundPage = () => import(/* webpackChunkName: "NotFoundPage" */ '../vue/pages/NotFound/index.vue');
+const IndexPage = () => import(/* webpackChunkName: "IndexPage" */ '../vue/pages/Index/Index.vue');
+const Game = () => import(/* webpackChunkName: "NotFoundPage" */ '../vue/pages/Game/Game.vue');
+const NotFoundPage = () => import(/* webpackChunkName: "NotFoundPage" */ '../vue/pages/NotFound/NotFound.vue');
 
 
 const routes = [
