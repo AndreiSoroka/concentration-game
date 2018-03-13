@@ -3,7 +3,7 @@
     <div
       :class="classCardBody"
       class="card__body"
-      @click="onClickCard"
+      @click="handlerClickCard"
       @mouseover="preload=false">
       <div
         :class="{'-preload': preload}"
@@ -118,25 +118,27 @@
 </style>
 
 <script>
+  import random from 'lodash/random';
+
   export default {
     props: {
-      id: {
+      id: {           // ИД карты
         type: Number,
         default: null,
       },
-      value: {
+      value: {        // карта (div class)
         type: String,
         default: null,
       },
-      isOpen: {
+      isOpen: {       // карта открыта
         type: Boolean,
         default: false,
       },
-      isDone: {
+      isDone: {       // пары карт найдены
         type: Boolean,
         default: false,
       },
-      level: {
+      level: {        // уровень игры
         type: Number,
         default: 0,
       },
@@ -144,12 +146,15 @@
 
     data() {
       return {
-        isRotateY: false,
-        preload: true // bug chrome, need preload images
+        isRotateY: false, // картинка на карте может переворачитьвася
+        preload: true     // карта скрыто перевернута для предварительного рендера (bug chrome optimization)
       };
     },
 
     computed: {
+      /**
+       * Классы на теле карты
+       */
       classCardBody() {
         return {
           "-flipped": this.isOpen || this.isDone,
@@ -158,20 +163,29 @@
       }
     },
 
+    /**
+     * @constructor
+     */
     created() {
-      this.isRotateY = this._randomInteger(0, 1);
+      this.isRotateY = random(0, 1);
     },
 
     methods: {
-      onClickCard() {
+      /**
+       * Клик по карте
+       */
+      handlerClickCard() {
         this.preload = false;
         this.$emit('clickCard', this.id);
       },
 
+      /**
+       * Стили на лицевой стороне карты
+       */
       styleObjImage() {
         let styles = {};
         if (this.level > 1) {
-          styles.transform = `rotate(${this._randomInteger(-50, 50)}deg)`;
+          styles.transform = `rotate(${random(-50, 50)}deg)`;
           if (this.isRotateY) {
             styles.transform += ` rotateY(180deg)`;
           }
@@ -179,17 +193,6 @@
 
         return styles;
       },
-
-      /**
-       * Генерация рандомного числа
-       * @param {number} min
-       * @param {number} max
-       * @returns {number}
-       * @private
-       */
-      _randomInteger(min, max) {
-        return Math.floor(min + Math.random() * (max + 1 - min));
-      }
     }
   };
 </script>

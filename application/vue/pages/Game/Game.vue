@@ -1,5 +1,6 @@
 <template>
   <div class="game">
+
     <div class="game__menu">
       <router-link
         to="/"
@@ -7,9 +8,10 @@
       </router-link>
       <button
         class="btn btn-link"
-        @click="reloadThisLevel">Повторить уровень
+        @click="handlerReloadThisLevel">Повторить уровень
       </button>
     </div>
+
     <div
       v-if="!isWin"
       class="game_place">
@@ -18,7 +20,7 @@
         :key="`${countGame}-${index}`"
         v-bind="card"
         class="game_place__card"
-        @clickCard="onClickCard"></card>
+        @clickCard="handlerClickCard"></card>
     </div>
     <div v-else>
       <h3>Поздравляем!</h3>
@@ -29,6 +31,7 @@
       </ul>
     </div>
   </div>
+
 </template>
 
 <style lang="scss">
@@ -53,9 +56,25 @@
   import shuffle from 'lodash/shuffle';
   import flatten from 'lodash/flatten';
 
-  // картинки для карт (генерация классов css)
-  const allCards = Array.from({length: 25}, (value, index) => `x${Math.floor(index / 5)} y${index % 5}`);
+  /**
+   * Картинки для карт (генерация классов css)
+   * @const
+   * @type {string[]}
+   */
+  const ALL_CARDS = Array.from({length: 25}, (value, index) => `x${Math.floor(index / 5)} y${index % 5}`);
+
+  /**
+   * Время, на которое будут открыты карты
+   * @const
+   * @type {number}
+   */
   const DELAY_OPEN_CARD = 1000;
+
+  /**
+   * Время, на закрытие карт
+   * @const
+   * @type {number}
+   */
   const DELAY_CLOSE_CARD = 300;
 
   export default {
@@ -66,46 +85,57 @@
     data() {
       let level = +this.$route.params.level;
       let size = +this.$route.params.size;
+
       return {
-        countGame: 0,
-        blockGame: false,
-        level,
-        size,
-        needOpenCard: (level <= 2) ? 2 : 3,
-        /*
+        countGame: 0,       // счетчик сыграных игр
+        blockGame: false,   // игра заблокированна
+        level,              // уровень игры
+        size,               // размер поля
+        needOpenCard: (level <= 2) ? 2 : 3, // кол-во карт, которое нужно открыть
+        /* карты для игры
         [
           {
-            id: index,
-            value: val,
-            isOpen: false,
-            isDone: false,
+            id: {number},
+            value: {string},
+            isOpen: {boolean},
+            isDone: {boolean},
+            level: {number}
           }
         ]
         */
         cards: [],
-        nowOpenIdCards: [],
-        countDone: 0,
-        countActions: 0,
-        startDate: null,
-        idInterval: null,
+        nowOpenIdCards: [], // ИД открытых карт
+        countDone: 0,       // счетчик правильно открытых карт
+        countActions: 0,    // счетчик открытых карт за все время
+        startDate: null,    // время начала игры
+        idInterval: null,   // интервал на открытие карт
       };
     },
 
     computed: {
+      /**
+       * Игра закончилась
+       */
       isWin() {
         return this.cards.length === this.countDone;
       },
     },
 
+    /**
+     * @constructor
+     */
     created() {
       this.generationNewGame();
     },
 
     methods: {
+      /**
+       * Генерация уровня
+       */
       generationNewGame() {
 
         // случайные картинки на картах
-        let _allCards = shuffle(allCards);
+        let _allCards = shuffle(ALL_CARDS);
 
         // создаем карты для игры
         let cards = _allCards.slice(0, Math.floor(this.size / this.needOpenCard));
@@ -127,7 +157,10 @@
         this.startDate = Date.now();
       },
 
-      onClickCard(id) {
+      /**
+       * Клик по карте
+       */
+      handlerClickCard(id) {
         if (this.blockGame) {
           return;
         }
@@ -160,6 +193,9 @@
 
       },
 
+      /**
+       * Проверка открытых карт
+       */
       checkCards() {
         // проверка совпадения карт
         let isValueEq = true;
@@ -179,6 +215,9 @@
         }
       },
 
+      /**
+       * Закрыте всех открытых карт
+       */
       closeOpenCards() {
         this.nowOpenIdCards.forEach(id => this.__updateCardData(id, 'isOpen', false));
         this.nowOpenIdCards = [];
@@ -186,21 +225,28 @@
 
       /**
        * Обновление вложнных объектов в @see {@link data.cards}
-       * @param id
-       * @param param
-       * @param value
+       * @param {number} id - ИД карты
+       * @param {string} param - поле в {@link data.cards}
+       * @param {number|string} value - новое значение
        * @private
        */
       __updateCardData(id, param, value) {
         this.cards[id][param] = value;
       },
 
+      /**
+       * Время - результат игры
+       * @returns {string}
+       */
       timeFinish() {
         let sec = Math.floor((Date.now() - this.startDate) / 1000);
         return `${Math.floor(sec / 60)} мин ${sec % 60} сек`;
       },
 
-      reloadThisLevel() {
+      /**
+       * Запустить уровень заного
+       */
+      handlerReloadThisLevel() {
         clearInterval(this.idInterval);
         this.blockGame = true;
         this.cards = this.cards.map(val => ({...val, isDone: false, isOpen: false}));
