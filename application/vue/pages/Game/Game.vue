@@ -18,12 +18,10 @@
       </button>
     </div>
     <div
-      v-if="level<3"
-      class="game__description">Соберите карты по паре
-    </div>
-    <div
-      v-else
-      class="game__description">Соберите по три карты
+      v-if="!isWin"
+      class="game__description">
+      <span v-if="level < 3">Соберите карты по паре</span>
+      <span v-else>Соберите по три карты</span>
     </div>
 
     <div
