@@ -11,7 +11,7 @@
         <div
           :class="value"
           :style="styleObjImage()"
-          class="card__image"></div>
+          class="card__images card__image"></div>
       </div>
       <div class="card__item -back"></div>
     </div>
@@ -87,38 +87,12 @@
     margin: 14px auto;
     transform-style: preserve-3d;
     transition: transform 0.3s ease;
-
-    &.x1 {
-      background-position-x: -83px;
-    }
-    &.x2 {
-      background-position-x: -162px;
-    }
-    &.x3 {
-      background-position-x: -240px;
-    }
-    &.x4 {
-      background-position-x: -321px;
-    }
-
-    &.y1 {
-      background-position-y: -90px;
-    }
-    &.y2 {
-      background-position-y: -180px;
-    }
-    &.y3 {
-      background-position-y: -270px;
-    }
-    &.y4 {
-      background-position-y: -363px;
-    }
-
   }
 </style>
 
 <script>
   import random from 'lodash/random';
+  import './cards.scss';
 
   export default {
     props: {

@@ -61,7 +61,7 @@
    * @const
    * @type {string[]}
    */
-  const ALL_CARDS = Array.from({length: 25}, (value, index) => `x${Math.floor(index / 5)} y${index % 5}`);
+  const ALL_CARDS = Array.from({length: 25}, (value, index) => `-x${Math.floor(index / 5)} -y${index % 5}`);
 
   /**
    * Время, на которое будут открыты карты
@@ -227,7 +227,7 @@
        * Обновление вложнных объектов в @see {@link data.cards}
        * @param {number} id - ИД карты
        * @param {string} param - поле в {@link data.cards}
-       * @param {number|string} value - новое значение
+       * @param {number|string|boolean} value - новое значение
        * @private
        */
       __updateCardData(id, param, value) {
