@@ -21,20 +21,15 @@
       <div class="start_game__item">
         <div class="start_game__title">Выберете уровень:</div>
         <div class="start_game__param">
-          <div
-            class="btn-group"
-            role="group"
-            aria-label="Basic example">
-            <button
-              v-for="level in levels"
-              :key="level"
-              :class="{active: level===selectLevel}"
-              class="btn btn-secondary"
-              type="button"
-              @click="selectLevel=level">
-              {{ level }}
-            </button>
-          </div>
+          <button
+            v-for="level in levels"
+            :key="level"
+            :class="{active: level===selectLevel}"
+            class="btn btn-outline-dark"
+            type="button"
+            @click="selectLevel=level">
+            {{ level }}
+          </button>
         </div>
         <div class="start_game__description">
           <div v-show="selectLevel===1">На столе простые карточки, нужно найти пару</div>
@@ -46,20 +41,15 @@
       <div class="start_game__item">
         <div class="start_game__title">Выберете количество карт:</div>
         <div class="start_game__param">
-          <div
-            class="btn-group"
-            role="group"
-            aria-label="Basic example">
-            <button
-              v-for="size in sizes"
-              :key="size"
-              :class="{active: size===selectSize}"
-              class="btn btn-secondary"
-              type="button"
-              @click="selectSize=size">
-              {{ size }}
-            </button>
-          </div>
+          <button
+            v-for="size in sizes"
+            :key="size"
+            :class="{active: size===selectSize}"
+            class="btn btn-outline-dark"
+            type="button"
+            @click="selectSize=size">
+            {{ size }}
+          </button>
         </div>
       </div>
 
@@ -97,6 +87,13 @@
   .start_game__description {
     margin: 0.5rem 0;
     color: #6a6b6c;
+  }
+
+  .start_game__param {
+    button {
+      width: 3rem;
+      margin: 3px;
+    }
   }
 
 </style>

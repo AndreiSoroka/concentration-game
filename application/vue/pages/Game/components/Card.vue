@@ -26,6 +26,13 @@
     perspective: 800px;
   }
 
+  @media (max-width: 650px) {
+    .card {
+      width: 74px;
+      height: 110px;
+    }
+  }
+
   .card__body {
     position: absolute;
     width: 100%;
