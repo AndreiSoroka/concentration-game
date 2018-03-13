@@ -276,7 +276,6 @@
       handlerReloadThisLevel() {
         clearInterval(this.idInterval);
         this.blockGame = true;
-        this.cards = this.cards.map(val => ({...val, isDone: false, isOpen: false}));
         setTimeout(() => {
           this.countGame += 1;
           this.nowOpenIdCards = [];
