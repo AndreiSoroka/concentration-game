@@ -107,7 +107,7 @@
       levels: [1, 2, 3],
       sizes: [6, 12, 18, 24, 30, 36, 42, 48],
       selectLevel: 2,
-      selectSize: 24,
+      selectSize: 12,
       preload: {cardImage, smilesImage}
     }),
     methods: {

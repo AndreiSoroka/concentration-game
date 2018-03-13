@@ -12,9 +12,18 @@
       </button>
       <button
         v-if="level<3"
-        class="btn btn-link"
-        @click="handlerNextLevel">Попробуйте {{ level + 1 }} уровень
+        :class="{'btn-primary': isWin, 'btn-link': !isWin}"
+        class="btn"
+        @click="handlerNextLevel">Попробовать {{ level + 1 }} уровень
       </button>
+    </div>
+    <div
+      v-if="level<3"
+      class="game__description">Соберите карты по паре
+    </div>
+    <div
+      v-else
+      class="game__description">Соберите по три карты
     </div>
 
     <div
@@ -80,6 +89,11 @@
 
   .game__menu {
     margin-bottom: 1rem;
+  }
+
+  .game__description {
+    margin-left: 9px;
+    color: #555;
   }
 </style>
 
