@@ -14,6 +14,7 @@
 
     <div
       v-if="!isWin"
+      :class="{'-hide': blockGame}"
       class="game_place">
       <card
         v-for="(card, index) in cards"
@@ -36,10 +37,36 @@
 
 <style lang="scss">
   .game_place {
+    position: relative;
     border-radius: 5px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    animation: show_cards .5s;
+    opacity: 1;
+
+    &.-hide {
+      opacity: 0;
+      animation: hide_cards .4s;
+    }
+  }
+
+  @keyframes show_cards {
+    0%, 30% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hide_cards {
+    0%{
+      opacity: 1
+    }
+    100% {
+      opacity: 0
+    }
   }
 
   .game_place__card {
@@ -75,7 +102,7 @@
    * @const
    * @type {number}
    */
-  const DELAY_CLOSE_CARD = 300;
+  const DELAY_CLOSE_CARD = 500;
 
   export default {
     components: {
