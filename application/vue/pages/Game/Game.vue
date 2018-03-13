@@ -8,7 +8,12 @@
       </router-link>
       <button
         class="btn btn-link"
-        @click="handlerReloadThisLevel">Повторить уровень
+        @click="handlerReloadLevel">Повторить уровень
+      </button>
+      <button
+        v-if="level<3"
+        class="btn btn-link"
+        @click="handlerNextLevel">Попробуйте {{ level + 1 }} уровень
       </button>
     </div>
 
@@ -61,7 +66,7 @@
   }
 
   @keyframes hide_cards {
-    0%{
+    0% {
       opacity: 1
     }
     100% {
@@ -110,16 +115,14 @@
     },
 
     data() {
-      let level = +this.$route.params.level;
-      let size = +this.$route.params.size;
-
       return {
         countGame: 0,       // счетчик сыграных игр
         blockGame: false,   // игра заблокированна
-        level,              // уровень игры
-        size,               // размер поля
-        needOpenCard: (level <= 2) ? 2 : 3, // кол-во карт, которое нужно открыть
-        /* карты для игры
+        level: 0,           // уровень игры (задается generationNewGame)
+        size: 0,            // размер поля (задается generationNewGame)
+        startDate: null,    // время начала игры (задается generationNewGame)
+        needOpenCard: 2,    // кол-во карт, которое нужно открыть (задается generationNewGame)
+        /*                     карты для игры (задается generationNewGame)
         [
           {
             id: {number},
@@ -134,7 +137,6 @@
         nowOpenIdCards: [], // ИД открытых карт
         countDone: 0,       // счетчик правильно открытых карт
         countActions: 0,    // счетчик открытых карт за все время
-        startDate: null,    // время начала игры
         idInterval: null,   // интервал на открытие карт
       };
     },
@@ -146,6 +148,12 @@
       isWin() {
         return this.cards.length === this.countDone;
       },
+    },
+
+    watch: {
+      '$route'() {
+        this.handlerReloadLevel();
+      }
     },
 
     /**
@@ -160,6 +168,11 @@
        * Генерация уровня
        */
       generationNewGame() {
+
+        this.level = +this.$route.params.level;
+        this.size = +this.$route.params.size;
+
+        this.needOpenCard = (this.level <= 2) ? 2 : 3;
 
         // случайные картинки на картах
         let _allCards = shuffle(ALL_CARDS);
@@ -273,7 +286,7 @@
       /**
        * Запустить уровень заного
        */
-      handlerReloadThisLevel() {
+      handlerReloadLevel() {
         clearInterval(this.idInterval);
         this.blockGame = true;
         setTimeout(() => {
@@ -284,6 +297,19 @@
           this.generationNewGame();
           this.blockGame = false;
         }, this.isWin ? 0 : DELAY_CLOSE_CARD);
+      },
+
+      /**
+       * Запустить следующий уровень
+       */
+      handlerNextLevel() {
+        this.$router.push({
+          name: 'game',
+          params: {
+            size: this.size,
+            level: this.level + 1
+          }
+        });
       }
     }
   };
