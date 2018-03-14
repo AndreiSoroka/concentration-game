@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node server",
+    "start": "NODE_ENV=production node productionServer",
     "build": "NODE_ENV=production webpack",
     "build:dev": "webpack --display-error-details",
     "build:watch": "webpack --watch",
     "test": "mocha",
     "deploy": "node deploy",
-    "server": "node server"
+    "server": "node devServer",
+    "prepublish": "rm -rf ./public; npm run build;"
   },
   "author": "Andrei Soroka",
   "license": "MIT",
@@ -46,8 +47,10 @@
   },
   "dependencies": {
     "bootstrap": "^4.0.0",
+    "express": "^4.16.3",
     "lodash": "^4.17.4",
     "normalize.css": "^8.0.0",
+    "nuxt": "^1.4.0",
     "reqwest": "^2.0.5",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
