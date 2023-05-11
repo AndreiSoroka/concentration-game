@@ -1,8 +1,30 @@
 ### Demo
-You can see demo: [https://concentration-game-vue.herokuapp.com](https://concentration-game-vue.herokuapp.com/)
+You can see demo: https://concentration-game.andreisoroka.com/
 
 #### Repository: get start new project
 https://github.com/AndreiSoroka/get-start-template-vue/
+
+### Test task description
+Create a memory card game using Vue.js.
+The cards should be shuffled and placed face down.
+The player should be able to flip two cards at a time.
+If the cards match, they should be removed from the game.
+If they don't match, they should be flipped back.
+The game should end when all cards are removed.
+The timer should stop when the game ends.
+The game should be responsive and work on mobile devices.
+https://en.wikipedia.org/wiki/Concentration_(card_game)
+
+Technologies to be used: Vue.js
+
+### My notices
+- 2018 year
+- Custom structure (not vue-cli)
+- No tests
+- Easy project
+- My design
+
+Updates: heroku is deprecated
 
 ### Build production
 
