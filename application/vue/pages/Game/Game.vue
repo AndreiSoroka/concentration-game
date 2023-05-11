@@ -292,11 +292,11 @@
        */
       timeFinish() {
         let sec = Math.floor((Date.now() - this.startDate) / 1000);
-        return `${Math.floor(sec / 60)} мин ${sec % 60} сек`;
+        return `${Math.floor(sec / 60)} min ${sec % 60} sec`;
       },
 
       /**
-       * Запустить уровень заного
+       * Запустить уровень заново
        */
       handlerReloadLevel() {
         clearInterval(this.idInterval);
