@@ -4,24 +4,24 @@
     <div class="game__menu">
       <router-link
         to="/"
-        class="btn btn-link">Новая игра
+        class="btn btn-link">New game
       </router-link>
       <button
         class="btn btn-link"
-        @click="handlerReloadLevel">Повторить уровень
+        @click="handlerReloadLevel">Repeat level
       </button>
       <button
         v-if="level<3"
         :class="{'btn-primary': isWin, 'btn-link': !isWin}"
         class="btn"
-        @click="handlerNextLevel">Попробовать {{ level + 1 }} уровень
+        @click="handlerNextLevel">Try level {{ level + 1 }}
       </button>
     </div>
     <div
       v-if="!isWin"
       class="game__description">
-      <span v-if="level < 3">Соберите карты по паре</span>
-      <span v-else>Соберите по три карты</span>
+      <span v-if="level < 3">Collect cards in pairs</span>
+      <span v-else>Collect three cards</span>
     </div>
 
     <div
@@ -36,11 +36,11 @@
         @clickCard="handlerClickCard"></card>
     </div>
     <div v-else>
-      <h3>Поздравляем!</h3>
+      <h3>Congratulations!</h3>
       <ul>
-        <li>Всего карт: {{ size }}</li>
-        <li>Карт перевернуто: {{ countActions }}</li>
-        <li>Времени: {{ timeFinish() }}</li>
+        <li>Total cards: {{ size }}</li>
+        <li>Cards flipped: {{ countActions }}</li>
+        <li>Time: {{ timeFinish() }}</li>
       </ul>
     </div>
   </div>

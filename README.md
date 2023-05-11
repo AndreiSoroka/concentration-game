@@ -24,7 +24,7 @@ Technologies to be used: Vue.js
 - Easy project
 - My design
 
-Updates: heroku is deprecated
+Updates: heroku is deprecated, OpenAI translated the game into English
 
 ### Build production
 

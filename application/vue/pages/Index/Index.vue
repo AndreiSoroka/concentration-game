@@ -9,17 +9,17 @@
       rel="prefetch prerender"/>
 
     <div class="page_in__block">
-      <b>Концентрация (Concentration)</b>, также известная как Match Match, Match Up, Memory, Pelmanism,
+      <b>Concentration</b>, also known as Match Match, Match Up, Memory, Pelmanism,
       Shinkei-suijaku,
-      Pexeso или просто пары, представляет собой карточную игру, в которой все карты укладываются лицом вниз,
-      а две карты переворачивают лицом вверх по очереди. Цель игры - перевернуть пары совпадающих карт.
+      Pexeso or simply pairs, is a card game where all cards are laid face down,
+      and two cards are flipped face up in turn. The goal of the game is to flip pairs of matching cards.
     </div>
 
     <div class="jumbotron start_game">
-      <h2>Игра Концентрация</h2>
+      <h2>Concentration Game</h2>
 
       <div class="start_game__item">
-        <div class="start_game__title">Выберете уровень:</div>
+        <div class="start_game__title">Choose a level:</div>
         <div class="start_game__param">
           <button
             v-for="level in levels"
@@ -32,14 +32,14 @@
           </button>
         </div>
         <div class="start_game__description">
-          <div v-show="selectLevel===1">На столе простые карточки, нужно найти пару</div>
-          <div v-show="selectLevel===2">На столе карты могут быть отражены и повернуты, нужно найти пару</div>
-          <div v-show="selectLevel===3">На столе карты могут быть отражены и повернуты, нужно найти три карты</div>
+          <div v-show="selectLevel===1">Simple cards are on the table, you need to find a pair</div>
+          <div v-show="selectLevel===2">Cards on the table can be reflected and rotated, you need to find a pair</div>
+          <div v-show="selectLevel===3">Cards on the table can be reflected and rotated, you need to find three cards</div>
         </div>
       </div>
 
       <div class="start_game__item">
-        <div class="start_game__title">Выберете количество карт:</div>
+        <div class="start_game__title">Choose the number of cards:</div>
         <div class="start_game__param">
           <button
             v-for="size in sizes"
@@ -57,7 +57,7 @@
         class="btn btn-primary"
         type="button"
         @click="onClickStart">
-        Начать игру
+        Start game
       </button>
     </div>
 
